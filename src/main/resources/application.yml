@@ -1,0 +1,27 @@
+jwt:
+    secretKey: Lv5b7VRg+ph4bCuXxcXItCSk2uYQyQHVHyDzqFooH/w=
+logging:
+    level:
+        org:
+            springframework:
+                security: TRACE
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        password: 1234
+        url: jdbc:mysql://localhost:3306/todolist
+        username: root
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        client-id: 925651645543-u70419l4sdckr8bgu8bflafosq9e34i2.apps.googleusercontent.com
+                        client-secret: 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
+                    github:
+                        client-id: c0a2f9e2a07e0ada6c4e
+                        client-secret: 16d1353f578e6f13432723368d41ff05e36276f3
