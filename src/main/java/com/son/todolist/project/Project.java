@@ -7,7 +7,8 @@ import lombok.*;
 
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -25,6 +26,9 @@ public class Project {
     private Set<Section> sections;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "owner_user_id")
     private User user;
+
+    @OneToMany(mappedBy = "project")
+    private Set<ProjectUser> users;
 }

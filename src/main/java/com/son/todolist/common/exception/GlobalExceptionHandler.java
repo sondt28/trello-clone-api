@@ -1,13 +1,11 @@
-package com.son.todolist.exception;
+package com.son.todolist.common.exception;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,14 +22,15 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .toList();
-
         errors.put("errors", errorMessages);
 
         return ResponseEntity.badRequest().body(errors);
     }
 
-    @ExceptionHandler(ProjectException.class)
-    public ResponseEntity<Object> handlerProjectExceptions(ProjectException projectException) {
-        return ResponseEntity.badRequest().body(projectException.getMessage());
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Object> handlerProjectExceptions(NotFoundException notFoundException) {
+        Map<String, Object> errors = new HashMap<>();
+        errors.put("error", notFoundException.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
     }
 }

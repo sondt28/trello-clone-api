@@ -6,17 +6,19 @@ import java.time.LocalDateTime;
 
 public record TodoDto(
         Long id,
-        @NotBlank
-        @NotEmpty
+        @NotBlank(message = "text field must not be null")
+        @NotEmpty(message = "text field must not be empty")
         String text,
+        int order,
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime createAt,
-        boolean isCompleted,
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Future
         LocalDateTime dueDate,
         @Min(1)
         @Max(10)
-        int priority
+        int priority,
+        @NotNull(message = "sectionId field must not be null")
+        Long sectionId
 ) {
 }

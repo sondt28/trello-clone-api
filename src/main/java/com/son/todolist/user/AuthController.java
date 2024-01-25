@@ -10,22 +10,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/auth")
+public class AuthController {
 
-    private final UserService service;
+    private final AuthService service;
 
-    public UserController(UserService service) {
+    public AuthController(AuthService service) {
         this.service = service;
-    }
-
-    @PostMapping("/login/oauth2/google")
-    public ResponseEntity<String> login(@RequestBody IdTokenDto idTokenDto) {
-        String token = service.loginOAuthGoogle(idTokenDto);
-        if (token == null)
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(token);
     }
 
     @PostMapping("/login")
@@ -40,7 +31,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody UserRegisterDto dto, UriComponentsBuilder ucb) {
         service.register(dto);
-        URI uri = ucb.path("/users/login").build().toUri();
+        URI uri = ucb.path("/auth/login").build().toUri();
 
         return ResponseEntity.created(uri).build();
     }

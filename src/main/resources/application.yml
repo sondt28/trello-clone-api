@@ -1,15 +1,10 @@
 jwt:
     secretKey: Lv5b7VRg+ph4bCuXxcXItCSk2uYQyQHVHyDzqFooH/w=
-logging:
-    level:
-        org:
-            springframework:
-                security: TRACE
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
         password: 1234
-        url: jdbc:mysql://localhost:3306/todolist
+        url: jdbc:mysql://localhost:3306/todo_list
         username: root
     jpa:
         hibernate:

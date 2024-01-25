@@ -1,12 +1,9 @@
 package com.son.todolist.todo;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -21,29 +18,35 @@ public class TodoController {
     private final TodoService service;
 
     @GetMapping("/{id}")
-    public ResponseEntity<TodoDto> findTodoByOwner(@PathVariable Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        TodoDto dto = service.findByOwner(id, authentication.getName());
-        if (dto == null) {
-            return ResponseEntity.notFound().build();
-        }
-
+    public ResponseEntity<TodoDto> findTodo(@PathVariable Long id) {
+        TodoDto dto = service.findById(id);
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping
-    public ResponseEntity<List<TodoDto>> findAllTodoByOwner(Pageable pageable) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Page<TodoDto> page = service.findByUser(pageable, authentication.getName());
+    @GetMapping("{section-id}/section")
+    public ResponseEntity<List<TodoDto>> findTodoBySection(@PathVariable Long sectionId) {
+        List<TodoDto> dtos = service.findAllBySection(sectionId);
 
-        return ResponseEntity.ok(page.getContent());
+        return ResponseEntity.ok(dtos);
     }
 
-    @GetMapping("/admin")
-    public ResponseEntity<List<Todo>> findAllTodo(Pageable pageable) {
-        Page<Todo> page = service.findAll(pageable);
+    @PutMapping("/{id}/move-on-section")
+    public ResponseEntity<Void> moveTodoOnSection(@PathVariable(name = "id") Long todoId,
+                                                  @RequestParam Long sectionId,
+                                                  @RequestParam int newOrder) {
 
-        return ResponseEntity.ok(page.getContent());
+        service.moveOnSection(sectionId, todoId, newOrder);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/move-to-section")
+    public ResponseEntity<Void> moveToSection(@PathVariable(name = "id") Long todoId,
+                                              @RequestParam Long sectionId,
+                                              @RequestParam Long newSectionId,
+                                              @RequestParam int order) {
+        service.moveToSection(todoId, sectionId, newSectionId, order);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping
@@ -51,9 +54,9 @@ public class TodoController {
             @Valid @RequestBody TodoDto dto,
             UriComponentsBuilder uriComponentsBuilder) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        TodoDto savedTodo = service.save(dto, authentication.getName());
-        URI locationOfNewTodo = uriComponentsBuilder.path("/todos/{id}").buildAndExpand(savedTodo.id()).toUri();
+        TodoDto savedTodo = service.save(dto);
+        URI locationOfNewTodo = uriComponentsBuilder.path("/todos/{id}")
+                .buildAndExpand(savedTodo.id()).toUri();
 
         return ResponseEntity.created(locationOfNewTodo).build();
     }
@@ -63,28 +66,13 @@ public class TodoController {
             @PathVariable Long id,
             @Valid @RequestBody TodoDto dto
     ) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isUpdated = service.update(id, dto, authentication.getName());
-        if (isUpdated)
-            return ResponseEntity.noContent().build();
-
-        return ResponseEntity.notFound().build();
+        service.update(id, dto);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        boolean isDeleted = service.delete(id, authentication.getName());
-        if (isDeleted)
-            return ResponseEntity.noContent().build();
-
-        return ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deleteAll() {
-        service.deleteAll();
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

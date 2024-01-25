@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.son.todolist.helper.Constant.CHARCOAL_COLOR;
+import static com.son.todolist.common.helper.Constant.CHARCOAL_COLOR;
 
 @Mapper(componentModel = "spring")
 public abstract class ProjectMapper {
@@ -22,22 +22,18 @@ public abstract class ProjectMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "hexColor", expression = "java(handleHexColorFormat(dto.hexColor()))")
-    @Mapping(target = "order", expression = "java(getProjectAmountOfUser(email))")
-    @Mapping(target = "user", expression = "java(getUserByEmail(email))")
-    abstract Project dtoToProject(ProjectDto dto, String email);
+    @Mapping(target = "order", expression = "java(getProjectAmountOfUser(user.getEmail()))")
+    abstract Project dtoToProject(ProjectDto dto, User user);
 
     abstract ProjectDto projectToDto(Project project);
+
+    abstract ProjectAndSectionDto projectToprojectAndSectionDto(Project project);
 
     @Mapping(target = "order", ignore = true)
     @Mapping(target = "id", ignore = true)
     abstract Project updateProjectFromDto(ProjectDto dto, @MappingTarget Project project);
-
     public List<ProjectDto> projectsToDtos(List<Project> projects) {
         return projects.stream().map(this::projectToDto).toList();
-    }
-
-    protected User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
     }
 
     protected int getProjectAmountOfUser(String email) {

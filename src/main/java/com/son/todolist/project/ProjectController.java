@@ -3,11 +3,11 @@ package com.son.todolist.project;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -18,26 +18,26 @@ public class ProjectController {
     private final ProjectService service;
 
     @GetMapping
-    public ResponseEntity<List<ProjectDto>> getProjects() {
-        String email = getNameFromAuthentication();
-        List<ProjectDto> dtos = service.getAll(email);
+    public ResponseEntity<List<ProjectDto>> getProjects(Principal principal) {
+        List<ProjectDto> dtos = service.getAll(principal.getName());
 
         return ResponseEntity.ok(dtos);
     }
 
-    @PutMapping("{projectId}/order/{newOrder}")
-    public ResponseEntity<Void> moving(@PathVariable("projectId") Long projectId, @PathVariable("newOrder") int newOrder) {
-        String email = getNameFromAuthentication();
-
-        service.moving(projectId, email, newOrder);
-
-        return ResponseEntity.noContent().build();
-    }
+//    @PutMapping("{id}/order/{new-order}")
+//    public ResponseEntity<Void> moving(@PathVariable("id") Long projectId,
+//                                       @PathVariable("new-order") int newOrder,
+//                                       Principal principal) {
+//
+//        service.moving(projectId, principal.getName(), newOrder);
+//
+//        return ResponseEntity.noContent().build();
+//    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectDto> getProject(@PathVariable Long id) {
-        String email = getNameFromAuthentication();
-        ProjectDto dto = service.get(id, email);
+    public ResponseEntity<ProjectAndSectionDto> getProject(@PathVariable Long id,
+                                                           Principal principal) {
+        ProjectAndSectionDto dto = service.get(id, principal.getName());
 
         if (dto == null)
             return ResponseEntity.notFound().build();
@@ -46,30 +46,45 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateProject(@PathVariable Long id, @RequestBody ProjectDto dto) {
-        String email = getNameFromAuthentication();
-        service.update(id, email, dto);
+    public ResponseEntity<Void> updateProject(@PathVariable Long id,
+                                              @RequestBody ProjectDto dto,
+                                              Principal principal) {
+        service.update(id, principal.getName(), dto);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping
-    public ResponseEntity<Void> createProject(@Valid @RequestBody ProjectDto dto, UriComponentsBuilder uriComponentsBuilder) {
-        String email = getNameFromAuthentication();
-        ProjectDto savedProject = service.save(dto, email);
+    public ResponseEntity<Void> createProject(@Valid @RequestBody ProjectDto dto,
+                                              UriComponentsBuilder uriComponentsBuilder,
+                                              Principal principal) {
+        ProjectDto savedProject = service.save(dto, principal.getName());
         URI uri = uriComponentsBuilder.path("/projects/{id}").buildAndExpand(savedProject.id()).toUri();
 
         return ResponseEntity.created(uri).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
-        String email = getNameFromAuthentication();
-        service.delete(id, email);
+    public ResponseEntity<Void> deleteProject(@PathVariable Long id, Principal principal) {
+        service.delete(id, principal.getName());
 
         return ResponseEntity.noContent().build();
     }
 
-    private String getNameFromAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    @PutMapping("{id}/users/{id-user}")
+    public ResponseEntity<Void> addUserToProject(@PathVariable("id") Long id,
+                                                 @PathVariable("id-user") Long userId) {
+
+        service.addUserToProject(id, userId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("{id}/users/{id-user}")
+    public ResponseEntity<Void> removeUserFromProject(@PathVariable("id") Long id,
+                                                      @PathVariable("id-user") Long userId) {
+
+        service.removeUserFromProject(id, userId);
+
+        return ResponseEntity.noContent().build();
     }
 }

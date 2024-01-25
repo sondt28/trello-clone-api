@@ -1,37 +1,37 @@
 package com.son.todolist.todo;
 
-import com.son.todolist.user.User;
-import com.son.todolist.user.UserRepository;
+import com.son.todolist.section.Section;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public abstract class TodoMapper {
-    private UserRepository userRepository;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private TodoRepository todoRepository;
 
+    @Mapping(target = "sectionId", source = "todo.section.id")
     abstract TodoDto todoToTodoDto(Todo todo);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createAt", ignore = true)
-    @Mapping(target = "user", expression = "java(getUserByEmail(email))")
-    abstract Todo dtoToTodo(TodoDto dto, String email);
+    @Mapping(target = "order", expression = "java(getTotalTodosOfSection(dto.sectionId()))")
+    abstract Todo dtoToTodo(TodoDto dto, Section section);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createAt", ignore = true)
+    @Mapping(target = "order", ignore = true)
     abstract void updateTodoFromDto(TodoDto dto, @MappingTarget Todo todo);
 
-    public Page<TodoDto> pageTodoToPageTodoDto(Page<Todo> todoPage) {
-        return todoPage.map(this::todoToTodoDto);
+    public List<TodoDto> pageTodoToPageTodoDto(List<Todo> todos) {
+        return todos.stream().map(this::todoToTodoDto).toList();
     }
-    protected User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+
+    protected int getTotalTodosOfSection(Long sectionId) {
+        return todoRepository.countTodoBySectionId(sectionId);
     }
 }

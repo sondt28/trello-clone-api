@@ -1,4 +1,4 @@
-package com.son.todolist.helper;
+package com.son.todolist.common.helper;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -19,7 +19,10 @@ public class JwtHelper {
     public String createToken(String email) {
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
 
-        return Jwts.builder().subject(email).signWith(key).compact();
+        return Jwts.builder()
+                .subject(email)
+                .signWith(key)
+                .compact();
     }
 
     public String getTokenFromHeader(HttpServletRequest request) {
