@@ -1,22 +1,17 @@
 jwt:
-    secretKey: Lv5b7VRg+ph4bCuXxcXItCSk2uYQyQHVHyDzqFooH/w=
+    secret-key: Lv5b7VRg+ph4bCuXxcXItCSk2uYQyQHVHyDzqFooH/w=
 spring:
     datasource:
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        url: jdbc:mysql://${MYSQL_HOST:todolistms.cgvaj24vuxpn.ap-northeast-1.rds.amazonaws.com}:${MYSQL_PORT:3306}/${MYSQL_DB_NAME:todo_list}
+#        password: ${MYSQL_PASSWORD:password}
+#        username: ${MYSQL_USER:admin}
         driver-class-name: com.mysql.cj.jdbc.Driver
-        password: 1234
-        url: jdbc:mysql://localhost:3306/todo_list
-        username: root
+        url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB_NAME:todo_list}
+        password: ${MYSQL_PASSWORD:1234}
+        username: ${MYSQL_USER:root}
     jpa:
         hibernate:
             ddl-auto: update
         show-sql: true
-    security:
-        oauth2:
-            client:
-                registration:
-                    google:
-                        client-id: 925651645543-u70419l4sdckr8bgu8bflafosq9e34i2.apps.googleusercontent.com
-                        client-secret: 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
-                    github:
-                        client-id: c0a2f9e2a07e0ada6c4e
-                        client-secret: 16d1353f578e6f13432723368d41ff05e36276f3
+

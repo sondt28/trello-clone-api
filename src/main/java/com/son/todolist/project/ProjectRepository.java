@@ -14,26 +14,4 @@ import java.util.Optional;
 public interface ProjectRepository extends CrudRepository<Project, Long> {
     @Query("SELECT p FROM Project p LEFT JOIN FETCH p.sections s WHERE p.id = :projectId AND user.email = :email ORDER BY s.order ASC")
     Optional<Project> findProjectWithSortedSections(@Param("projectId") Long projectId, @Param("email") String email);
-
-    List<Project> findByUserEmailOrderByOrderAsc(String email);
-
-    int countProjectByUserEmail(String email);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE Project " +
-            "SET order = order + 1 " +
-            "WHERE order >= :newOrder AND order < :oldOrder AND user.email = :userEmail")
-    void incrementPrevToPosition(@Param("newOrder") int newOrder,
-                                 @Param("oldOrder") int oldOrder,
-                                 @Param("userEmail") String email);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE Project " +
-            "SET order = order - 1 " +
-            "WHERE order <= :newOrder AND order > :oldOrder AND user.email = :userEmail")
-    void decrementAboveToPosition(@Param("newOrder") int newOrder,
-                                  @Param("oldOrder") int oldOrder,
-                                  @Param("userEmail") String email);
 }

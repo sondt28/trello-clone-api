@@ -1,5 +1,6 @@
 package com.son.todolist.user;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody UserRegisterDto dto, UriComponentsBuilder ucb) {
+    public ResponseEntity<Void> register(@Valid @RequestBody UserRegisterDto dto, UriComponentsBuilder ucb) {
         service.register(dto);
         URI uri = ucb.path("/auth/login").build().toUri();
 

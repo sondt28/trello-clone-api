@@ -21,7 +21,7 @@ public class AuthService {
         Authentication authenticationResponse = this.authenticationManager.authenticate(authenticationRequest);
 
         if (authenticationResponse.isAuthenticated()) {
-            return jwtHelper.createToken(dto.email());
+            return jwtHelper.createToken(authenticationResponse);
         }
 
         return null;

@@ -18,9 +18,8 @@ public class Project {
     private Long id;
     private String name;
     private String hexColor;
-    @Column(name = "`order`")
-    private int order;
-    private boolean isPublic = false;
+
+    private boolean isPublic;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private Set<Section> sections;

@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 public record TodoDto(
         Long id,
         @NotBlank(message = "text field must not be null")
-        @NotEmpty(message = "text field must not be empty")
         String text,
         int order,
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

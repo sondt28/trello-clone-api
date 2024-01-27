@@ -7,7 +7,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,24 +56,6 @@ public class ProjectService {
     public void delete(Long id, String email) {
         Project project = getProjectByIdAndUserEmail(id, email);
         projectRepository.delete(project);
-    }
-
-    public void moving(Long projectId, String email, int newOrder) {
-        Project project = getProjectByIdAndUserEmail(projectId, email);
-
-        int totalProject = projectRepository.countProjectByUserEmail(email);
-
-        int oldOrder = project.getOrder();
-        if (newOrder > oldOrder && newOrder <= totalProject - 1) {
-            projectRepository.decrementAboveToPosition(newOrder, oldOrder, email);
-        } else if (newOrder < oldOrder && newOrder >= 0) {
-            projectRepository.incrementPrevToPosition(newOrder, oldOrder, email);
-        } else {
-            throw new NotFoundException("Invalid order");
-        }
-
-        project.setOrder(newOrder);
-        projectRepository.save(project);
     }
 
     private Project getProjectByIdAndUserEmail(Long id, String email) {

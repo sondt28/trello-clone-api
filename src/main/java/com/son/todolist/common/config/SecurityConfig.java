@@ -1,6 +1,7 @@
 package com.son.todolist.common.config;
 
 import com.son.todolist.common.filter.AuthorizationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -31,14 +33,12 @@ public class SecurityConfig {
             "/swagger-ui.html",
             "/webjars/**",
             "/v3/api-docs/**",
-            "/swagger-ui/**"
+            "/swagger-ui/**",
+            "/h2-console/**"
     };
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private AuthorizationFilter authorizationFilter;
+    private final UserDetailsService userDetailsService;
+    private final AuthorizationFilter authorizationFilter;
 
     @Bean
     public AuthenticationManager authenticationManager() {

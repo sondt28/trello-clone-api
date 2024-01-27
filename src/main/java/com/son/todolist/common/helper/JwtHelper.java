@@ -7,20 +7,28 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.util.Date;
+
+import static com.son.todolist.common.helper.Constant.ONE_WEEK;
 
 @Component
 public class JwtHelper {
-    @Value("${jwt.secretKey}")
+    @Value("${jwt.secret-key}")
     private String secretKey;
 
-    public String createToken(String email) {
+    public String createToken(Authentication authentication) {
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+        long expMillis = System.currentTimeMillis() + ONE_WEEK;
+        Date expiration = new Date(expMillis);
 
         return Jwts.builder()
-                .subject(email)
+                .issuedAt(new Date())
+                .expiration(expiration)
+                .subject(authentication.getName())
                 .signWith(key)
                 .compact();
     }

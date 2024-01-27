@@ -18,6 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ProjectControllerTest {
+    private static final String END_POINT_PATH = "/projects";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -31,7 +33,7 @@ public class ProjectControllerTest {
                 new ProjectAndSectionDto(1L, "DailyRoutine", "#808080", false, null));
 
         RequestBuilder request = MockMvcRequestBuilders
-                .get("/projects/1")
+                .get(END_POINT_PATH + "/1")
                 .accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(request)

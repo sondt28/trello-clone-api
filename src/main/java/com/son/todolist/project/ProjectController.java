@@ -24,16 +24,6 @@ public class ProjectController {
         return ResponseEntity.ok(dtos);
     }
 
-//    @PutMapping("{id}/order/{new-order}")
-//    public ResponseEntity<Void> moving(@PathVariable("id") Long projectId,
-//                                       @PathVariable("new-order") int newOrder,
-//                                       Principal principal) {
-//
-//        service.moving(projectId, principal.getName(), newOrder);
-//
-//        return ResponseEntity.noContent().build();
-//    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ProjectAndSectionDto> getProject(@PathVariable Long id,
                                                            Principal principal) {
