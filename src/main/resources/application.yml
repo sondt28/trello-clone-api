@@ -2,10 +2,6 @@ jwt:
     secret-key: Lv5b7VRg+ph4bCuXxcXItCSk2uYQyQHVHyDzqFooH/w=
 spring:
     datasource:
-#        driver-class-name: com.mysql.cj.jdbc.Driver
-#        url: jdbc:mysql://${MYSQL_HOST:todolistms.cgvaj24vuxpn.ap-northeast-1.rds.amazonaws.com}:${MYSQL_PORT:3306}/${MYSQL_DB_NAME:todo_list}
-#        password: ${MYSQL_PASSWORD:password}
-#        username: ${MYSQL_USER:admin}
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB_NAME:todo_list}
         password: ${MYSQL_PASSWORD:1234}
