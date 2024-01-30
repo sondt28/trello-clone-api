@@ -30,6 +30,7 @@ public abstract class ProjectMapper {
 
     @Mapping(target = "id", ignore = true)
     abstract Project updateProjectFromDto(ProjectDto dto, @MappingTarget Project project);
+
     public List<ProjectDto> projectsToDtos(List<Project> projects) {
         return projects.stream().map(this::projectToDto).toList();
     }

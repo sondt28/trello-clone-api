@@ -1,6 +1,5 @@
 package com.son.todolist.project;
 
-import com.son.todolist.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

@@ -4,8 +4,9 @@ import com.son.todolist.common.validation.EmailExisted;
 import com.son.todolist.common.validation.PasswordMatches;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 
-
+@Builder
 @PasswordMatches
 public record UserRegisterDto(
         @EmailExisted

@@ -1,5 +1,6 @@
 package com.son.todolist.section;
 
+import com.son.todolist.common.based.BaseEntity;
 import com.son.todolist.project.Project;
 import com.son.todolist.todo.Todo;
 import jakarta.persistence.*;
@@ -15,10 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Section {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Section extends BaseEntity {
     private String name;
     @Column(name = "`order`")
     private int order;

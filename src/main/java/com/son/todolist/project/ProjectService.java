@@ -19,7 +19,7 @@ public class ProjectService {
     private final ProjectMapper mapper;
 
     public List<ProjectDto> getAll(String email) {
-        List<Project> projects = projectUserRepository.findProjectByUserEmail(email);
+        List<Project> projects = projectUserRepository.findProjectsByUserEmail(email);
 
         return mapper.projectsToDtos(projects);
     }

@@ -1,5 +1,6 @@
 package com.son.todolist.user;
 
+import com.son.todolist.common.based.BaseEntity;
 import com.son.todolist.project.Project;
 import com.son.todolist.project.ProjectUser;
 import jakarta.persistence.*;
@@ -7,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
 import java.util.Set;
 
 @Getter
@@ -14,10 +17,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity {
+
     @Column(nullable = false, unique = true)
     private String email;
     private String fullName;
