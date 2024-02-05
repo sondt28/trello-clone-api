@@ -33,8 +33,7 @@ public class SecurityConfig {
             "/swagger-ui.html",
             "/webjars/**",
             "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/h2-console/**"
+            "/swagger-ui/**"
     };
 
     private final UserDetailsService userDetailsService;

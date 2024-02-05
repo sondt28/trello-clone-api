@@ -2,12 +2,9 @@ package com.son.todolist.user;
 
 import com.son.todolist.common.based.BaseEntity;
 import com.son.todolist.project.Project;
-import com.son.todolist.project.ProjectUser;
+import com.son.todolist.projectuser.ProjectUser;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
@@ -16,7 +13,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@SuperBuilder
+@Entity(name = "`user`")
 public class User extends BaseEntity {
 
     @Column(nullable = false, unique = true)
@@ -32,10 +30,4 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user")
     private Set<ProjectUser> projectUsers;
-
-    public User(String fullName, String email, RoleEnum role) {
-        this.fullName = fullName;
-        this.email = email;
-        this.role = role;
-    }
 }

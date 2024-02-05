@@ -21,7 +21,7 @@ public class JwtHelper {
     private String secretKey;
 
     public String createToken(Authentication authentication) {
-        SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+        SecretKey key = getSecretKey();
         long expMillis = System.currentTimeMillis() + ONE_WEEK;
         Date expiration = new Date(expMillis);
 
@@ -44,7 +44,7 @@ public class JwtHelper {
 
     public boolean validateToken(String token) {
         try {
-            SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+            SecretKey key = getSecretKey();
             Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
             return true;
         } catch (Exception e) {
@@ -54,12 +54,16 @@ public class JwtHelper {
 
     public String getEmailFromToken(String token) {
         try {
-            SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+            SecretKey key = getSecretKey();
             Jws<Claims> claimsJws = Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
             Claims claims = claimsJws.getPayload();
             return claims.getSubject();
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private SecretKey getSecretKey() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
 }

@@ -1,0 +1,19 @@
+jwt:
+    secret-key: zzz
+spring:
+    sql:
+      init:
+          mode: always
+    datasource:
+        driver-class-name: org.h2.Driver
+        url: jdbc:h2:mem:todo_list
+        password:
+        username: sa
+
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+        defer-datasource-initialization: true
+
+

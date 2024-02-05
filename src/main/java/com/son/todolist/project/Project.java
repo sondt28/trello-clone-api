@@ -1,10 +1,12 @@
 package com.son.todolist.project;
 
 import com.son.todolist.common.based.BaseEntity;
+import com.son.todolist.projectuser.ProjectUser;
 import com.son.todolist.section.Section;
 import com.son.todolist.user.User;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
 
@@ -12,9 +14,9 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 @Entity
 public class Project extends BaseEntity {
-
     private String name;
     private String hexColor;
     private boolean isPublic;

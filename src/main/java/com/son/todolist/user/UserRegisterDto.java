@@ -11,7 +11,7 @@ import lombok.Builder;
 public record UserRegisterDto(
         @EmailExisted
         @NotBlank(message = "email must not be blank.")
-        @Email(message = "email must be correct format.")
+        @Email(message = "email must be correct format eg: abc@.. ")
         String email,
         @NotBlank(message = "password must not be empty.")
         String password,
