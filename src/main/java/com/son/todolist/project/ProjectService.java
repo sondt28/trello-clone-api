@@ -1,6 +1,9 @@
 package com.son.todolist.project;
 
 import com.son.todolist.common.exception.NotFoundException;
+import com.son.todolist.projectuser.ProjectUser;
+import com.son.todolist.projectuser.ProjectUserId;
+import com.son.todolist.projectuser.ProjectUserRepository;
 import com.son.todolist.user.User;
 import com.son.todolist.user.UserRepository;
 import jakarta.transaction.Transactional;
@@ -18,14 +21,15 @@ public class ProjectService {
     private final ProjectUserRepository projectUserRepository;
     private final ProjectMapper mapper;
 
-    public List<ProjectDto> getAll(String email) {
-        List<Project> projects = projectUserRepository.findProjectByUserEmail(email);
+    public List<ProjectDto> getAll() {
+        List<Project> projects = projectUserRepository.findProjectsByUserEmail();
 
         return mapper.projectsToDtos(projects);
     }
 
-    public ProjectAndSectionDto get(Long id, String email) {
-        Project project = getProjectByIdAndUserEmail(id, email);
+    public ProjectAndSectionDto get(Long id) {
+        Project project = projectUserRepository.findProjectByUserEmail(id)
+                .orElseThrow(() -> new NotFoundException("Project not found."));
 
         return mapper.projectToprojectAndSectionDto(project);
     }
@@ -38,8 +42,10 @@ public class ProjectService {
         Project project = mapper.dtoToProject(dto, user);
 
         project = projectRepository.save(project);
-        ProjectUserId projectUserId = new ProjectUserId(project.getId(), user.getId());
-        ProjectUser projectUser = new ProjectUser(projectUserId, project, user);
+        ProjectUser projectUser = new ProjectUser(
+                new ProjectUserId(project.getId(), user.getId()),
+                project,
+                user);
 
         projectUserRepository.save(projectUser);
 
@@ -64,10 +70,8 @@ public class ProjectService {
     }
 
     public void addUserToProject(Long id, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found."));
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found."));
+        User user = getUserByUserId(userId);
+        Project project = getProjectById(id);
 
         ProjectUserId projectUserId = new ProjectUserId(id, userId);
 
@@ -80,14 +84,17 @@ public class ProjectService {
     }
 
     public void removeUserFromProject(Long id, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found."));
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found."));
-
-        ProjectUserId projectUserId = new ProjectUserId(id, userId);
-
-        Optional<ProjectUser> projectUserOpt = projectUserRepository.findById(projectUserId);
+        Optional<ProjectUser> projectUserOpt = projectUserRepository.findById(new ProjectUserId(id, userId));
         projectUserOpt.ifPresent(projectUserRepository::delete);
+    }
+
+    private User getUserByUserId(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found."));
+    }
+
+    private Project getProjectById(Long projectId) {
+        return projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException("User not found."));
     }
 }

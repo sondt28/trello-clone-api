@@ -18,16 +18,15 @@ public class ProjectController {
     private final ProjectService service;
 
     @GetMapping
-    public ResponseEntity<List<ProjectDto>> getProjects(Principal principal) {
-        List<ProjectDto> dtos = service.getAll(principal.getName());
+    public ResponseEntity<List<ProjectDto>> getProjects() {
+        List<ProjectDto> dtos = service.getAll();
 
         return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectAndSectionDto> getProject(@PathVariable Long id,
-                                                           Principal principal) {
-        ProjectAndSectionDto dto = service.get(id, principal.getName());
+    public ResponseEntity<ProjectAndSectionDto> getProject(@PathVariable Long id) {
+        ProjectAndSectionDto dto = service.get(id);
 
         if (dto == null)
             return ResponseEntity.notFound().build();
@@ -63,7 +62,6 @@ public class ProjectController {
     @PutMapping("{id}/users/{id-user}")
     public ResponseEntity<Void> addUserToProject(@PathVariable("id") Long id,
                                                  @PathVariable("id-user") Long userId) {
-
         service.addUserToProject(id, userId);
 
         return ResponseEntity.noContent().build();
@@ -72,7 +70,6 @@ public class ProjectController {
     @DeleteMapping("{id}/users/{id-user}")
     public ResponseEntity<Void> removeUserFromProject(@PathVariable("id") Long id,
                                                       @PathVariable("id-user") Long userId) {
-
         service.removeUserFromProject(id, userId);
 
         return ResponseEntity.noContent().build();

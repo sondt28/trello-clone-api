@@ -1,5 +1,6 @@
-package com.son.todolist.project;
+package com.son.todolist.projectuser;
 
+import com.son.todolist.project.Project;
 import com.son.todolist.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

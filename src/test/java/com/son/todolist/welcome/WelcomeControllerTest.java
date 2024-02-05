@@ -22,9 +22,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(WelcomeController.class)
 @Import(SecurityConfig.class)
 public class WelcomeControllerTest {
-    @Autowired private MockMvc mockMvc;
-    @MockBean private JwtHelper helper;
-    @MockBean private UserDetailsService userDetailsService;
+    @Autowired
+    private MockMvc mockMvc;
+    @MockBean
+    private JwtHelper helper;
+    @MockBean
+    private UserDetailsService userDetailsService;
 
     @Test
     public void welcomeTest() throws Exception {
