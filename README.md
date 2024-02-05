@@ -15,7 +15,6 @@ http://trello-clone-env.eba-pujrm34t.ap-northeast-1.elasticbeanstalk.com/swagger
 
 ## Features
 
-
 * Authentication with JWT and Email validation
 * User can create projects (boards) public or private
 
