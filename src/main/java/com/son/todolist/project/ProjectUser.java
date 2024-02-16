@@ -1,17 +1,15 @@
-package com.son.todolist.projectuser;
+package com.son.todolist.project;
 
-import com.son.todolist.project.Project;
 import com.son.todolist.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class ProjectUser {
 

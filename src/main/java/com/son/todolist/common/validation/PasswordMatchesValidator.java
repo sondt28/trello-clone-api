@@ -10,8 +10,8 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
         if (obj == null)
             return false;
 
-        String password = obj.password();
-        String confirmPassword = obj.confirmPassword();
+        String password = obj.getPassword();
+        String confirmPassword = obj.getConfirmPassword();
 
         return password != null && password.equals(confirmPassword);
     }

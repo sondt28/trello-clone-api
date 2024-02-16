@@ -14,6 +14,7 @@ public interface ProjectRepository extends CrudRepository<Project, Long> {
     @Query("SELECT p " +
             "FROM Project p " +
             "JOIN p.sections s " +
-            "WHERE p.id = :projectId AND p.user.email = :email ORDER BY s.order ASC")
-    Optional<Project> findProjectWithSortedSections(@Param("projectId") Long projectId, @Param("email") String email);
+            "WHERE p.id = :projectId " +
+            "ORDER BY s.order ASC")
+    Optional<Project> findProjectWithSortedSections(@Param("projectId") Long projectId);
 }

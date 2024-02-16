@@ -30,8 +30,14 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<Void> register(@Valid @RequestBody UserRegisterDto dto, UriComponentsBuilder ucb) {
         service.register(dto);
-        URI uri = ucb.path("/auth/login").build().toUri();
+        URI uri = ucb.path("/auth/verify-otp").build().toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<Void> verifyAccount(@Valid @RequestBody VerificationOTPDto dto) {
+        service.enableAccount(dto);
+        return ResponseEntity.noContent().build();
     }
 }

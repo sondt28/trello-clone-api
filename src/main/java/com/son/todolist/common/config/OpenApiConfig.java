@@ -1,7 +1,6 @@
 package com.son.todolist.common.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -13,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         security = @SecurityRequirement(name = "bearer-key")
 )
-public class SwaggerConfig {
+public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()

@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TodoOrderDto {
-    private int newOrder;
+public class TodoSectionDto extends TodoOrderDto {
+    private Long newSectionId;
 }

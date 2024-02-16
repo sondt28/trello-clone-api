@@ -18,7 +18,7 @@ public class SectionController {
     @PostMapping
     public ResponseEntity<Void> createSection(@Valid @RequestBody SectionDto dto, UriComponentsBuilder uriComponentsBuilder) {
         SectionDto createdSection = sectionService.save(dto);
-        URI uri = uriComponentsBuilder.path("/sections/{id}").buildAndExpand(createdSection.id()).toUri();
+        URI uri = uriComponentsBuilder.path("/sections/{id}").buildAndExpand(createdSection.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
     }
@@ -35,4 +35,6 @@ public class SectionController {
 
         return ResponseEntity.noContent().build();
     }
+
+
 }

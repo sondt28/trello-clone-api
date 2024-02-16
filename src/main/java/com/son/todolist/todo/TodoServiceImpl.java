@@ -28,7 +28,7 @@ public class TodoServiceImpl {
     }
 
     public TodoDto save(TodoDto dto) {
-        Section section = sectionRepository.findById(dto.sectionId())
+        Section section = sectionRepository.findById(dto.getSectionId())
                 .orElseThrow(() -> new NotFoundException("Section not found."));
 
         Todo todo = todoMapper.dtoToTodo(dto, section);
@@ -54,7 +54,7 @@ public class TodoServiceImpl {
 
         int totalTodoOnSection = todoRepository.countTodoBySectionId(sectionId);
         int oldOrder = todo.getOrder();
-        int newOrder = dto.newOrder();
+        int newOrder = dto.getNewOrder();
 
         if (newOrder > oldOrder && newOrder < totalTodoOnSection)
             todoRepository.decrementAboveToPosition(newOrder, oldOrder, sectionId);
@@ -68,9 +68,9 @@ public class TodoServiceImpl {
         todoRepository.save(todo);
     }
 
-    public void moveToSection(Long todoId, Long sectionId, TodoOrderDto dto) {
+    public void moveToSection(Long todoId, Long sectionId, TodoSectionDto dto) {
         Todo todo = findTodoByIdAndSectionId(todoId, sectionId);
-        Section newSection = sectionRepository.findById(dto.newSectionId())
+        Section newSection = sectionRepository.findById(dto.getNewSectionId())
                 .orElseThrow(() -> new NotFoundException("New section not found."));
 
         Long projectIdOfOldSection = todo.getSection().getProject().getId();
@@ -79,12 +79,12 @@ public class TodoServiceImpl {
         if (!projectIdOfNewSection.equals(projectIdOfOldSection))
             throw new NotFoundException("Invalid section.");
 
-        int totalTodoOfNewSection = todoRepository.countTodoBySectionId(dto.newSectionId());
+        int totalTodoOfNewSection = todoRepository.countTodoBySectionId(dto.getNewSectionId());
         int oldOrder = todo.getOrder();
-        int newOrder = dto.newOrder();
+        int newOrder = dto.getNewOrder();
 
         if (newOrder >= 0 && newOrder < totalTodoOfNewSection) {
-            todoRepository.incrementOrder(newOrder, dto.newSectionId());
+            todoRepository.incrementOrder(newOrder, dto.getNewSectionId());
             todoRepository.decrementOrder(oldOrder, sectionId);
         }
 

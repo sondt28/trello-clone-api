@@ -1,6 +1,5 @@
-package com.son.todolist.projectuser;
+package com.son.todolist.project;
 
-import com.son.todolist.project.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,12 +14,4 @@ public interface ProjectUserRepository extends JpaRepository<ProjectUser, Projec
             "FROM ProjectUser pu " +
             "WHERE pu.user.email = :#{authentication.name}")
     List<Project> findProjectsByUserEmail();
-
-    @Query("SELECT pu.project " +
-            "FROM ProjectUser pu " +
-            "JOIN Section s " +
-            "WHERE pu.id.projectId = :projectId AND pu.user.email = :#{authentication.name} " +
-            "ORDER BY s.order ASC")
-    Optional<Project> findProjectByUserEmail(@Param("projectId") Long projectId);
-
 }

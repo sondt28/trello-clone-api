@@ -19,7 +19,7 @@ public abstract class TodoMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createAt", ignore = true)
-    @Mapping(target = "order", expression = "java(getTotalTodosOfSection(dto.sectionId()))")
+    @Mapping(target = "order", expression = "java(getTotalTodosOfSection(dto.getSectionId()))")
     abstract Todo dtoToTodo(TodoDto dto, Section section);
 
     @Mapping(target = "id", ignore = true)

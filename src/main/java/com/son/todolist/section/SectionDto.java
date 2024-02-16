@@ -1,13 +1,17 @@
 package com.son.todolist.section;
 
+import com.son.todolist.common.based.BaseDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-public record SectionDto(
-        Long id,
+@Getter
+@Setter
+public class SectionDto extends BaseDto {
         @NotBlank(message = "name must not be blank")
-        String name,
+        private String name;
         @NotNull(message = "projectId must not be null")
-        Long projectId,
-        int order) {
+        private Long projectId;
+        private int order;
 }

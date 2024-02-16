@@ -47,7 +47,7 @@ public class ProjectController {
                                               UriComponentsBuilder uriComponentsBuilder,
                                               Principal principal) {
         ProjectDto savedProject = service.save(dto, principal.getName());
-        URI uri = uriComponentsBuilder.path("/projects/{id}").buildAndExpand(savedProject.id()).toUri();
+        URI uri = uriComponentsBuilder.path("/projects/{id}").buildAndExpand(savedProject.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
     }
@@ -59,19 +59,18 @@ public class ProjectController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("{id}/users/{id-user}")
+    @PutMapping("{id}/users/{user-id}")
     public ResponseEntity<Void> addUserToProject(@PathVariable("id") Long id,
-                                                 @PathVariable("id-user") Long userId) {
+                                                 @PathVariable("user-id") Long userId) {
         service.addUserToProject(id, userId);
 
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("{id}/users/{id-user}")
+    @DeleteMapping("{id}/users/{user-id}")
     public ResponseEntity<Void> removeUserFromProject(@PathVariable("id") Long id,
-                                                      @PathVariable("id-user") Long userId) {
+                                                      @PathVariable("user-id") Long userId) {
         service.removeUserFromProject(id, userId);
-
         return ResponseEntity.noContent().build();
     }
 }

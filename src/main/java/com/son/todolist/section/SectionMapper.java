@@ -11,7 +11,7 @@ public abstract class SectionMapper {
     private SectionRepository sectionRepository;
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "order", expression = "java(getTotalSectionInProject(dto.projectId()))")
+    @Mapping(target = "order", expression = "java(getTotalSectionInProject(dto.getProjectId()))")
     @Mapping(target = "name", source = "dto.name")
     abstract Section dtoToSection(SectionDto dto, Project project);
 

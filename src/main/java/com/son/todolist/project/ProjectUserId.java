@@ -1,4 +1,4 @@
-package com.son.todolist.projectuser;
+package com.son.todolist.project;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

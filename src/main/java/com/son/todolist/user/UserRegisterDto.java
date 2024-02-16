@@ -5,16 +5,19 @@ import com.son.todolist.common.validation.PasswordMatches;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Builder
+@Getter
+@Setter
 @PasswordMatches
-public record UserRegisterDto(
+public class UserRegisterDto {
         @EmailExisted
         @NotBlank(message = "email must not be blank.")
-        @Email(message = "email must be correct format eg: abc@.. ")
-        String email,
+        @Email(message = "email must be correct format eg: abc@xyz ")
+        private String email;
         @NotBlank(message = "password must not be empty.")
-        String password,
-        @NotBlank(message = "confirmPassword must not be blank.")
-        String confirmPassword) {
+        private String password;
+        @NotBlank(message = "confirm password must not be blank.")
+        private String confirmPassword;
 }

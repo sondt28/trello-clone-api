@@ -1,9 +1,6 @@
 package com.son.todolist.project;
 
 import com.son.todolist.common.exception.NotFoundException;
-import com.son.todolist.projectuser.ProjectUser;
-import com.son.todolist.projectuser.ProjectUserId;
-import com.son.todolist.projectuser.ProjectUserRepository;
 import com.son.todolist.user.User;
 import com.son.todolist.user.UserRepository;
 import jakarta.transaction.Transactional;
@@ -23,12 +20,11 @@ public class ProjectService {
 
     public List<ProjectDto> getAll() {
         List<Project> projects = projectUserRepository.findProjectsByUserEmail();
-
         return mapper.projectsToDtos(projects);
     }
 
     public ProjectAndSectionDto get(Long id) {
-        Project project = projectUserRepository.findProjectByUserEmail(id)
+        Project project = projectRepository.findProjectWithSortedSections(id)
                 .orElseThrow(() -> new NotFoundException("Project not found."));
 
         return mapper.projectToprojectAndSectionDto(project);
@@ -65,7 +61,7 @@ public class ProjectService {
     }
 
     private Project getProjectByIdAndUserEmail(Long id, String email) {
-        return projectRepository.findProjectWithSortedSections(id, email)
+        return projectRepository.findProjectWithSortedSections(id)
                 .orElseThrow(() -> new NotFoundException("Project not found."));
     }
 

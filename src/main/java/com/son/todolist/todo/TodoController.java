@@ -17,13 +17,13 @@ public class TodoController {
     private final TodoServiceImpl service;
 
     @GetMapping("/{todo-id}")
-    public ResponseEntity<TodoDto> findTodo(@PathVariable Long todoId) {
+    public ResponseEntity<TodoDto> findTodo(@PathVariable("todo-id") Long todoId) {
         TodoDto dto = service.findById(todoId);
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("{section-id}/section")
-    public ResponseEntity<List<TodoDto>> findTodoBySection(@PathVariable Long sectionId) {
+    public ResponseEntity<List<TodoDto>> findTodoBySection(@PathVariable("section-id") Long sectionId) {
         List<TodoDto> dtos = service.findAllBySection(sectionId);
 
         return ResponseEntity.ok(dtos);
@@ -36,14 +36,14 @@ public class TodoController {
 
         TodoDto savedTodo = service.save(dto);
         URI locationOfNewTodo = uriComponentsBuilder.path("/todos/{id}")
-                .buildAndExpand(savedTodo.id()).toUri();
+                .buildAndExpand(savedTodo.getId()).toUri();
 
         return ResponseEntity.created(locationOfNewTodo).build();
     }
 
     @PutMapping("/{todo-id}/move-on-section/{section-id}")
-    public ResponseEntity<Void> moveTodoOnSection(@PathVariable Long todoId,
-                                                  @PathVariable Long sectionId,
+    public ResponseEntity<Void> moveTodoOnSection(@PathVariable("todo-id") Long todoId,
+                                                  @PathVariable("section-id") Long sectionId,
                                                   @Valid @RequestBody TodoOrderDto dto) {
 
         service.moveOnSection(todoId, sectionId, dto);
@@ -51,9 +51,9 @@ public class TodoController {
     }
 
     @PutMapping("/{todo-id}/move-to-section/{section-id}")
-    public ResponseEntity<Void> moveToSection(@PathVariable Long todoId,
-                                              @PathVariable Long sectionId,
-                                              @Valid @RequestBody TodoOrderDto dto) {
+    public ResponseEntity<Void> moveToSection(@PathVariable("todo-id") Long todoId,
+                                              @PathVariable("section-id") Long sectionId,
+                                              @Valid @RequestBody TodoSectionDto dto) {
         service.moveToSection(todoId, sectionId, dto);
 
         return ResponseEntity.noContent().build();
@@ -61,7 +61,7 @@ public class TodoController {
 
     @PutMapping("/{todo-id}")
     public ResponseEntity<Object> updateTodo(
-            @PathVariable Long id,
+            @PathVariable("todo-id") Long id,
             @Valid @RequestBody TodoDto dto
     ) {
         service.update(id, dto);
@@ -69,7 +69,7 @@ public class TodoController {
     }
 
     @DeleteMapping("/{todo-id}")
-    public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTodo(@PathVariable("todo-id") Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

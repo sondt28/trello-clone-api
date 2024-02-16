@@ -13,3 +13,15 @@ spring:
     security:
         oauth2:
             resource-server:
+                public-key-location: classpath:cert/authz.pub
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: son286202@gmail.com
+        password: erwhfhpkvyuchfxu
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true

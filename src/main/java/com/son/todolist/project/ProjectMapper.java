@@ -21,7 +21,7 @@ public abstract class ProjectMapper {
     private UserRepository userRepository;
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "hexColor", expression = "java(handleHexColorFormat(dto.hexColor()))")
+    @Mapping(target = "hexColor", expression = "java(handleHexColorFormat(dto.getHexColor()))")
     abstract Project dtoToProject(ProjectDto dto, User user);
 
     abstract ProjectDto projectToDto(Project project);

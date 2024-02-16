@@ -16,7 +16,7 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public SectionDto save(SectionDto dto) {
         Project project = projectRepository
-                .findById(dto.projectId())
+                .findById(dto.getProjectId())
                 .orElseThrow(() -> new NotFoundException("Project not found."));
 
         Section section = mapper.dtoToSection(dto, project);
@@ -37,14 +37,14 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public void moving(SectionDto dto) {
-        Section section = sectionRepository.findByIdAndProjectId(dto.id(), dto.projectId());
+        Section section = sectionRepository.findByIdAndProjectId(dto.getId(), dto.getProjectId());
 
         if (section == null)
             throw new NotFoundException("Section not found.");
 
-        int totalSection = sectionRepository.countSectionByProjectId(dto.projectId());
+        int totalSection = sectionRepository.countSectionByProjectId(dto.getProjectId());
         int oldOrder = section.getOrder();
-        int newOrder = dto.order();
+        int newOrder = dto.getOrder();
 
         if (newOrder < oldOrder && newOrder >= 0)
             sectionRepository.incrementPrevToPosition(newOrder, oldOrder, section.getProject().getId());
